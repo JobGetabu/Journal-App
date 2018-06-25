@@ -5,7 +5,7 @@ package com.job.jounalapp.util;
  */
 public class Constants {
 
-    public static final String DAIRYCOL = "Dairies";
+    public static final String DAIRYCOL = "Dairy";
     public static final String USERSCOL = "Users";
     public static final String DAIRYIDEXTRA = "DAIRYIDEXTRA";
 

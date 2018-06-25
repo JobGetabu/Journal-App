@@ -62,7 +62,7 @@ public class JournalActivity extends AppCompatActivity {
     private void shouldSignIn(){
         if (mAuth.getCurrentUser() != null) {
             // already signed in
-            Toast.makeText(this, "Signed in as"+mAuth.getCurrentUser().getUid(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Signed in as "+mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_LONG).show();
         } else {
             // not signed in
             Toast.makeText(this, "Not Signed in", Toast.LENGTH_SHORT).show();

@@ -2,8 +2,6 @@ package com.job.jounalapp.datasource;
 
 import com.google.firebase.Timestamp;
 
-import java.util.HashMap;
-
 /**
  * Created by Job on Monday : 6/25/2018.
  *
@@ -16,13 +14,13 @@ import java.util.HashMap;
 public class Dairy {
     private String userid;
     private Timestamp timestamp;
-    private HashMap<String,String> moods;
+    private String moods;
     private String details;
 
     public Dairy() {
     }
 
-    public Dairy(String userid, Timestamp timestamp, HashMap<String, String> moods, String details) {
+    public Dairy(String userid, Timestamp timestamp, String moods, String details) {
         this.userid = userid;
         this.timestamp = timestamp;
         this.moods = moods;
@@ -35,14 +33,6 @@ public class Dairy {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public HashMap<String, String> getMoods() {
-        return moods;
-    }
-
-    public void setMoods(HashMap<String, String> moods) {
-        this.moods = moods;
     }
 
     public String getDetails() {
@@ -59,6 +49,14 @@ public class Dairy {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public String getMoods() {
+        return moods;
+    }
+
+    public void setMoods(String moods) {
+        this.moods = moods;
     }
 
     @Override
