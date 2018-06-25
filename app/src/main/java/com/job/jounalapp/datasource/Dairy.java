@@ -6,8 +6,15 @@ import java.util.HashMap;
 
 /**
  * Created by Job on Monday : 6/25/2018.
+ *
+ *
+ *
+ * POJO class that maps the data coming from the
+ * firestore collection into the list view in the home fragment.
  */
+
 public class Dairy {
+    private String userid;
     private Timestamp timestamp;
     private HashMap<String,String> moods;
     private String details;
@@ -15,7 +22,8 @@ public class Dairy {
     public Dairy() {
     }
 
-    public Dairy(Timestamp timestamp, HashMap<String, String> moods, String details) {
+    public Dairy(String userid, Timestamp timestamp, HashMap<String, String> moods, String details) {
+        this.userid = userid;
         this.timestamp = timestamp;
         this.moods = moods;
         this.details = details;
@@ -43,6 +51,14 @@ public class Dairy {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     @Override

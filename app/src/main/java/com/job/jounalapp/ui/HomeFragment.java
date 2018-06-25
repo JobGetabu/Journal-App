@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.Query;
 import com.job.jounalapp.R;
 
 import butterknife.BindView;
@@ -66,6 +68,12 @@ public class HomeFragment extends Fragment {
                 LinearLayoutManager(getContext().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
         homeList.setLayoutManager(linearLayoutManager);
+
+        // Create a reference to the members collection
+        final CollectionReference transRef = mFirestore.collection(USERSTRANSACTIONCOL);
+        final Query query = transRef
+                .whereEqualTo("userid",mCurrentUser.getUid())
+                .orderBy("timestamp", Query.Direction.ASCENDING);
     }
     @Override
     public void onStart() {

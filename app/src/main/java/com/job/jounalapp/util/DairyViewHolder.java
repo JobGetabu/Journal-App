@@ -18,6 +18,9 @@ import butterknife.OnClick;
 
 /**
  * Created by Job on Monday : 6/25/2018.
+ *
+ *
+ * ViewHolder class that injects the Daily pojo into the view.
  */
 public class DairyViewHolder extends RecyclerView.ViewHolder {
 
