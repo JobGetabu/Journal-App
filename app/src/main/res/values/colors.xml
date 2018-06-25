@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorPrimaryLight">#b4920662</color>
+    <color name="colorSecondaryDark">#b44b0747</color>
+    <color name="colorSecondaryLight">#964b0747</color>
+    <color name="scrimBackground">#b4f9ab60</color>
+
     <color name="bottomtab_item_resting">#66000000</color>
     <color name="bottomtab_item_disabled">#46000000</color>
 
