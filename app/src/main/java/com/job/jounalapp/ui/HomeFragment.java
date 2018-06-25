@@ -59,6 +59,9 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
+    private void setUpDairyList(){
+
+    }
     @Override
     public void onStart() {
         super.onStart();
