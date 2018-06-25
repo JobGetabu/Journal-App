@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,10 @@ public class HomeFragment extends Fragment {
 
     private void setUpDairyList(){
 
+        LinearLayoutManager linearLayoutManager = new
+                LinearLayoutManager(getContext().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+        homeList.setLayoutManager(linearLayoutManager);
     }
     @Override
     public void onStart() {
