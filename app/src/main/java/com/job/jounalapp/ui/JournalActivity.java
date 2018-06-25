@@ -1,5 +1,6 @@
 package com.job.jounalapp.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -7,17 +8,28 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.job.jounalapp.R;
 import com.job.jounalapp.util.BottomBarAdapter;
 import com.job.jounalapp.util.NoSwipePager;
+
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +43,8 @@ public class JournalActivity extends AppCompatActivity {
 
 
     public static final String TAG = "MainActivity";
+    // Choose an arbitrary request code value
+    private static final int RC_SIGN_IN = 123;
 
 
     private FirebaseAuth mAuth;
@@ -40,13 +54,19 @@ public class JournalActivity extends AppCompatActivity {
 
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        shouldSignIn();
+    }
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            sendToLogin();
+    private void shouldSignIn(){
+        if (mAuth.getCurrentUser() != null) {
+            // already signed in
+            Toast.makeText(this, "Signed in as"+mAuth.getCurrentUser().getUid(), Toast.LENGTH_LONG).show();
+        } else {
+            // not signed in
+            Toast.makeText(this, "Not Signed in", Toast.LENGTH_SHORT).show();
+            googleAuthIntent();
         }
     }
 
@@ -84,7 +104,7 @@ public class JournalActivity extends AppCompatActivity {
         mNoSwipePager.setPagingEnabled(false);
 
         //caches data in fragments
-        mNoSwipePager.setOffscreenPageLimit(3);
+        mNoSwipePager.setOffscreenPageLimit(1);
 
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         pagerAdapter.addFragments(new HomeFragment());
@@ -112,12 +132,6 @@ public class JournalActivity extends AppCompatActivity {
         return ContextCompat.getColor(this, color);
     }
 
-    private void sendToLogin() {
-       /* Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(loginIntent);
-        finish();*/
-    }
-
     AHBottomNavigation.OnTabSelectedListener onTabSelectedListener = new AHBottomNavigation.OnTabSelectedListener() {
         @Override
         public boolean onTabSelected(int position, boolean wasSelected) {
@@ -140,9 +154,90 @@ public class JournalActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
                     // Sign in logic here.
-                    sendToLogin();
+                    googleAuthIntent();
                 }
             }
         };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_logout:
+                Toast.makeText(JournalActivity.this, "Signing you out", Toast.LENGTH_SHORT).show();
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now signed out
+                                finish();
+                            }
+                        });
+
+                break;
+        }
+        return true;
+    }
+
+    private void googleAuthIntent(){
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setLogo(R.mipmap.ic_launcher)
+                        .setTheme(R.style.AppTheme)
+                        .setAvailableProviders(Collections.singletonList(
+                                new AuthUI.IdpConfig.GoogleBuilder().build()))
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            // Successfully signed in
+            if (resultCode == RESULT_OK) {
+
+                Intent intent = new Intent(this,JournalActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                // Sign in failed
+                if (response == null) {
+                    // User pressed back button
+                    showSnackbar(R.string.sign_in_cancelled);
+                    return;
+                }
+
+                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    showSnackbar(R.string.no_internet_connection);
+                    return;
+                }
+
+                showSnackbar(R.string.unknown_error);
+                Log.e(TAG, "Sign-in error: ", response.getError());
+
+                //googleAuthIntent();
+            }
+        }
+    }
+
+
+    private void showSnackbar(@StringRes int string){
+        Snackbar.make(findViewById(android.R.id.content), string,Snackbar.LENGTH_LONG);
     }
 }

@@ -1,6 +1,7 @@
 package com.job.jounalapp.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.job.jounalapp.R;
 
 import butterknife.BindView;
@@ -27,6 +29,8 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.home_fab)
     FloatingActionButton homeFab;
     Unbinder unbinder;
+
+    private FirestoreRecyclerAdapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -51,5 +55,23 @@ public class HomeFragment extends Fragment {
 
     @OnClick(R.id.home_fab)
     public void onViewClicked() {
+        Intent intent = new Intent(getActivity(),AddItemActivity.class);
+        startActivity(intent);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (adapter != null)
+            adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (adapter != null)
+            adapter.stopListening();
+    }
+
 }

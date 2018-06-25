@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_add" />
-                            <entry key="sourceFile" value="C:\Users\getab" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_logout" />
+                            <entry key="sourceFile" value="C:\Users\getab\Desktop\Projects\ProjectHacela\Design\icon assets\ic_logout.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -8,4 +8,8 @@
     <string name="save">Save</string>
     <string name="write_something_here">write something here</string>
     <string name="feelings">Feelings</string>
+    <string name="log_out">Log out</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">Unknown Error Occured</string>
 </resources>

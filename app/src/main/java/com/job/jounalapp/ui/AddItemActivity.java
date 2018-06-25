@@ -62,6 +62,10 @@ public class AddItemActivity extends AppCompatActivity {
             case R.id.item_disgust:
                 break;
             case R.id.item_save:
+
+                //TODO save item in database
+
+                finish();
                 break;
         }
     }
