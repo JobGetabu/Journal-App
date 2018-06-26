@@ -43,14 +43,19 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.single_item)
     MaterialCardView singleItem;
 
+    private int on=0;
+
     public DairyViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
 
+        //initially hidden
         singleBottom.setVisibility(View.GONE);
     }
 
-    @OnClick({R.id.single_chip_mood, R.id.horizontalScrollView, R.id.single_details, R.id.single_chip_day, R.id.single_chip_date, R.id.single_bottom, R.id.single_item})
+
+    @OnClick({R.id.single_chip_mood, R.id.horizontalScrollView, R.id.single_details,
+            R.id.single_chip_day, R.id.single_chip_date, R.id.single_bottom, R.id.single_item})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.single_chip_mood:
@@ -69,11 +74,20 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
                 break;
         }
 
-        singleBottom.setVisibility(View.VISIBLE);
+        if (on==0){
+            singleBottom.setVisibility(View.VISIBLE);
+            on=1;
+        }else {
+            singleBottom.setVisibility(View.GONE);
+            on=0;
+        }
     }
 
     @OnClick(R.id.single_delete)
     public void onSingleDeleteClicked() {
+
+        //todo: delete this item in the database
+
     }
 
     @OnClick(R.id.single_bottom)
