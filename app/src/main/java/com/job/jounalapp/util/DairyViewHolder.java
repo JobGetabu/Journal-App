@@ -19,8 +19,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +26,8 @@ import butterknife.OnClick;
 
 /**
  * Created by Job on Monday : 6/25/2018.
- *
- *
+ * <p>
+ * <p>
  * ViewHolder class that injects the Daily pojo into the view.
  */
 public class DairyViewHolder extends RecyclerView.ViewHolder {
@@ -53,14 +51,14 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.single_item)
     MaterialCardView singleItem;
 
-    private int on=0;
+    private int on = 0;
 
     private FirebaseFirestore mFirestore;
     public static final String TAG = "ListVH";
 
     public DairyViewHolder(@NonNull View itemView) {
         super(itemView);
-        ButterKnife.bind(this,itemView);
+        ButterKnife.bind(this, itemView);
 
         //initially hidden
         singleBottom.setVisibility(View.GONE);
@@ -89,12 +87,12 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
                 break;
         }
 
-        if (on==0){
+        if (on == 0) {
             singleBottom.setVisibility(View.VISIBLE);
-            on=1;
-        }else {
+            on = 1;
+        } else {
             singleBottom.setVisibility(View.GONE);
-            on=0;
+            on = 0;
         }
     }
 
@@ -105,44 +103,47 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void setUpListItem(Dairy model){
+    public void setUpListItem(Dairy model) {
+        if (model != null) {
+            singleChipMood.setChipText(model.getMoods());
+            singleDetails.setText(model.getDetails());
 
-        singleChipMood.setChipText(model.getMoods());
-        singleDetails.setText(model.getDetails());
+            if (model.getTimestamp() != null) {
 
-        Timestamp timestamp = model.getTimestamp();
-        Date date = timestamp.toDate();
+                Timestamp timestamp = model.getTimestamp();
+                Date date = timestamp.toDate();
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 
-        singleChipDay.setChipText(theDay(dayOfWeek));
+                singleChipDay.setChipText(theDay(dayOfWeek));
 
-        Locale locale = Locale.getDefault();
-        // call the getdisplaynames method
-        Map< String, Integer> representations =
-                c.getDisplayNames(Calendar.DAY_OF_WEEK, Calendar.LONG, locale);
-
-        DateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
-        singleChipDate.setChipText(dateFormat.format(date));
-
-    }
-
-    private String theDay(int day){
-        switch (day){
-            case 1: return "Sunday";
-            case 2: return "Monday";
-            case 3: return "Tuesday";
-            case 4: return "Wednesday";
-            case 5: return "Thursday";
-            case 6: return "Friday";
-            case 7: return "Saturday";
-            default:return "";
+                DateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
+                singleChipDate.setChipText(dateFormat.format(date));
+            }
         }
     }
 
-    @OnClick(R.id.single_bottom)
-    public void onSingleBottomClicked() {
+    private String theDay(int day) {
+        switch (day) {
+            case 1:
+                return "Sunday";
+            case 2:
+                return "Monday";
+            case 3:
+                return "Tuesday";
+            case 4:
+                return "Wednesday";
+            case 5:
+                return "Thursday";
+            case 6:
+                return "Friday";
+            case 7:
+                return "Saturday";
+            default:
+                return "";
+        }
     }
+
 }

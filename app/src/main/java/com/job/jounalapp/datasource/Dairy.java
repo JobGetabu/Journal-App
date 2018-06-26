@@ -13,6 +13,7 @@ import com.google.firebase.Timestamp;
 
 public class Dairy {
     private String userid;
+    private String dairyid;
     private Timestamp timestamp;
     private String moods;
     private String details;

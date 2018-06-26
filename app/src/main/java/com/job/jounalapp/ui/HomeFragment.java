@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -47,9 +46,7 @@ public class HomeFragment extends Fragment {
     Unbinder unbinder;
 
     private FirestoreRecyclerAdapter adapter;
-    private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
-    private FirebaseUser mCurrentUser;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -60,9 +57,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //firebase
-        mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
-        mCurrentUser = mAuth.getCurrentUser();
     }
 
     @Override
@@ -85,12 +80,10 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d(TAG, "onActivityCreated: " + mCurrentUser.getUid());
-        if (mAuth.getCurrentUser() == null) {
-            sendToLogin();
-        } else {
-            setUpDairyList();
-        }
+        Log.d(TAG, "onActivityCreated: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        setUpDairyList();
+
     }
 
     @OnClick(R.id.home_fab)
@@ -114,7 +107,7 @@ public class HomeFragment extends Fragment {
         // Create a reference to the members collection
         final CollectionReference dairyRef = mFirestore.collection(DAIRYCOL);
         final Query query = dairyRef
-                .whereEqualTo("userid", mCurrentUser.getUid())
+                .whereEqualTo("userid", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Dairy> options = new FirestoreRecyclerOptions.Builder<Dairy>()
@@ -155,7 +148,7 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if (mAuth.getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             sendToLogin();
         }
 

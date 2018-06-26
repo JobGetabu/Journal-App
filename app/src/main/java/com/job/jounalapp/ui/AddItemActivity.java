@@ -10,12 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.job.jounalapp.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +66,7 @@ public class AddItemActivity extends AppCompatActivity {
     private String stringIdExtra = "";
     private String moods = "";
     private FirebaseFirestore mFirestore;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +78,11 @@ public class AddItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //firebase
         mFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         stringIdExtra = getIntent().getStringExtra(DAIRYIDEXTRA);
 
-        if (!stringIdExtra.isEmpty()) {
+        if (stringIdExtra != null) {
             //load ui data for editing
 
             mFirestore.collection(DAIRYCOL).document(stringIdExtra).get()
@@ -82,9 +90,7 @@ public class AddItemActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
-
-                            } else {
-
+                                 itemDetails.getEditText().setText(task.getResult().getString("details"));
                             }
                         }
                     });
@@ -94,14 +100,31 @@ public class AddItemActivity extends AppCompatActivity {
     @OnClick(R.id.item_save)
     public void onSave(View view) {
 
+        Toast.makeText(AddItemActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
         String details = itemDetails.getEditText().getText().toString();
+        String key =  mFirestore.collection(DAIRYCOL).document().getId();
 
-                finish();
-    }
+        Map<String, Object> dairymap = new HashMap<>();
+        dairymap.put("moods", moods);
+        dairymap.put("details",details);
+        dairymap.put("timestamp", FieldValue.serverTimestamp());
+        dairymap.put("userid", mAuth.getCurrentUser().getUid());
+        dairymap.put("dairyid",key);
 
-    private void saveToDb() {
+        mFirestore.collection(DAIRYCOL).document(key)
+                .set(dairymap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(AddItemActivity.this, "Saved Successful", Toast.LENGTH_SHORT).show();
+                        } else {
 
-
+                            Toast.makeText(AddItemActivity.this, "Failed to Save", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        finish();
     }
 
     @OnClick({R.id.item_happy, R.id.item_fear, R.id.item_anger, R.id.item_sad, R.id.item_joy, R.id.item_disgust, R.id.item_anticipation, R.id.item_trust, R.id.item_love, R.id.item_shame})
