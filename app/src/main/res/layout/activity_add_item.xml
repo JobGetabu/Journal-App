@@ -7,6 +7,13 @@
     android:background="#eaeaea"
     tools:context=".ui.AddItemActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_toolbar"
+        android:background="@color/colorPrimary"
+        />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
@@ -21,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/item_toolbar" />
 
     <android.support.design.chip.ChipGroup
         android:id="@+id/chipGroup2"

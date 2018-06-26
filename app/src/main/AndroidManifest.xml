@@ -19,9 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AddItemActivity"
-            android:parentActivityName=".ui.JournalActivity"
-            ></activity>
+        <activity
+            android:name=".ui.AddItemActivity"
+            android:parentActivityName=".ui.JournalActivity" />
+        <activity android:name=".ui.SignInActivity"></activity>
     </application>
 
 </manifest>

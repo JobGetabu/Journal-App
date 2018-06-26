@@ -42,16 +42,17 @@ dependencies {
 
     // Firebase
     implementation 'com.google.firebase:firebase-firestore:16.0.0'
-    implementation 'com.google.firebase:firebase-auth:15.1.0'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-
-    //dazzling bottom nav bar
-    implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    //implementation 'com.google.firebase:firebase-auth:16.0.2'
+    //implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     // FirebaseUI for auth
     implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
     // FirebaseUI for Cloud Firestore
     implementation 'com.firebaseui:firebase-ui-firestore:4.0.1'
+
+    //dazzling bottom nav bar
+    implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
+
 
     //circuler imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'

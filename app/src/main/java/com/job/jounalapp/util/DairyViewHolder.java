@@ -10,7 +10,17 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.job.jounalapp.R;
+import com.job.jounalapp.datasource.Dairy;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,12 +55,17 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
 
     private int on=0;
 
+    private FirebaseFirestore mFirestore;
+    public static final String TAG = "ListVH";
+
     public DairyViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
 
         //initially hidden
         singleBottom.setVisibility(View.GONE);
+
+        mFirestore = FirebaseFirestore.getInstance();
     }
 
 
@@ -88,6 +103,43 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
 
         //todo: delete this item in the database
 
+    }
+
+    public void setUpListItem(Dairy model){
+
+        singleChipMood.setChipText(model.getMoods());
+        singleDetails.setText(model.getDetails());
+
+        Timestamp timestamp = model.getTimestamp();
+        Date date = timestamp.toDate();
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        singleChipDay.setChipText(theDay(dayOfWeek));
+
+        Locale locale = Locale.getDefault();
+        // call the getdisplaynames method
+        Map< String, Integer> representations =
+                c.getDisplayNames(Calendar.DAY_OF_WEEK, Calendar.LONG, locale);
+
+        DateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
+        singleChipDate.setChipText(dateFormat.format(date));
+
+    }
+
+    private String theDay(int day){
+        switch (day){
+            case 1: return "Sunday";
+            case 2: return "Monday";
+            case 3: return "Tuesday";
+            case 4: return "Wednesday";
+            case 5: return "Thursday";
+            case 6: return "Friday";
+            case 7: return "Saturday";
+            default:return "";
+        }
     }
 
     @OnClick(R.id.single_bottom)

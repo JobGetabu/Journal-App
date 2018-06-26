@@ -55,6 +55,15 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //firebase
+        mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,26 +85,26 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //firebase
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
-        mCurrentUser = mAuth.getCurrentUser();
-
-        setUpDairyList();
+        Log.d(TAG, "onActivityCreated: " + mCurrentUser.getUid());
+        if (mAuth.getCurrentUser() == null) {
+            sendToLogin();
+        } else {
+            setUpDairyList();
+        }
     }
 
     @OnClick(R.id.home_fab)
     public void onViewClicked() {
-        Intent intent = new Intent(getActivity(),AddItemActivity.class);
+        Intent intent = new Intent(getActivity(), AddItemActivity.class);
         startActivity(intent);
     }
 
     /*
-    * This sets up a firestore recycler view that manages the list data as added int the database
-    * changes are real time and responsive
-    * */
+     * This sets up a firestore recycler view that manages the list data as added int the database
+     * changes are real time and responsive
+     * */
 
-    private void setUpDairyList(){
+    private void setUpDairyList() {
 
         LinearLayoutManager linearLayoutManager = new
                 LinearLayoutManager(getContext().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -105,14 +114,14 @@ public class HomeFragment extends Fragment {
         // Create a reference to the members collection
         final CollectionReference dairyRef = mFirestore.collection(DAIRYCOL);
         final Query query = dairyRef
-                .whereEqualTo("userid",mCurrentUser.getUid())
+                .whereEqualTo("userid", mCurrentUser.getUid())
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Dairy> options = new FirestoreRecyclerOptions.Builder<Dairy>()
                 .setQuery(query, Dairy.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<Dairy,DairyViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<Dairy, DairyViewHolder>(options) {
             @NonNull
             @Override
             public DairyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -127,6 +136,7 @@ public class HomeFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull DairyViewHolder holder, int position, @NonNull Dairy model) {
 
+                holder.setUpListItem(model);
             }
 
             @Override
@@ -140,9 +150,14 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
         homeList.setAdapter(adapter);
     }
+
     @Override
     public void onStart() {
         super.onStart();
+
+        if (mAuth.getCurrentUser() == null) {
+            sendToLogin();
+        }
 
         if (adapter != null)
             adapter.startListening();
@@ -155,4 +170,8 @@ public class HomeFragment extends Fragment {
             adapter.stopListening();
     }
 
+    private void sendToLogin() {
+        Intent intent = new Intent(getActivity(), SignInActivity.class);
+        startActivity(intent);
+    }
 }
