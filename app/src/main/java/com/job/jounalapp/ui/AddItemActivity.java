@@ -127,7 +127,9 @@ public class AddItemActivity extends AppCompatActivity {
         finish();
     }
 
-    @OnClick({R.id.item_happy, R.id.item_fear, R.id.item_anger, R.id.item_sad, R.id.item_joy, R.id.item_disgust, R.id.item_anticipation, R.id.item_trust, R.id.item_love, R.id.item_shame})
+    @OnClick({R.id.item_happy, R.id.item_fear, R.id.item_anger, R.id.item_sad,
+            R.id.item_joy, R.id.item_disgust, R.id.item_anticipation,
+            R.id.item_trust, R.id.item_love, R.id.item_shame})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.item_happy:

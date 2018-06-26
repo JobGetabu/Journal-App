@@ -123,13 +123,15 @@ public class HomeFragment extends Fragment {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.single_dairy_item, parent, false);
 
-                return new DairyViewHolder(view);
+                return new DairyViewHolder(view,getContext());
             }
 
             @Override
             protected void onBindViewHolder(@NonNull DairyViewHolder holder, int position, @NonNull Dairy model) {
 
+                holder.init(model,mFirestore);
                 holder.setUpListItem(model);
+
             }
 
             @Override

@@ -60,6 +60,14 @@ public class Dairy {
         this.moods = moods;
     }
 
+    public String getDairyid() {
+        return dairyid;
+    }
+
+    public void setDairyid(String dairyid) {
+        this.dairyid = dairyid;
+    }
+
     @Override
     public String toString() {
         return "Dairy{" +

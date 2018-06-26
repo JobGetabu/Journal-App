@@ -1,5 +1,7 @@
 package com.job.jounalapp.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.card.MaterialCardView;
 import android.support.design.chip.Chip;
@@ -14,6 +16,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.job.jounalapp.R;
 import com.job.jounalapp.datasource.Dairy;
+import com.job.jounalapp.ui.AddItemActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +26,9 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.job.jounalapp.util.Constants.DAIRYCOL;
+import static com.job.jounalapp.util.Constants.DAIRYIDEXTRA;
 
 /**
  * Created by Job on Monday : 6/25/2018.
@@ -51,12 +57,15 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.single_item)
     MaterialCardView singleItem;
 
-    private int on = 0;
-
-    private FirebaseFirestore mFirestore;
     public static final String TAG = "ListVH";
 
-    public DairyViewHolder(@NonNull View itemView) {
+    private int on = 0;
+    private FirebaseFirestore mFirestore;
+    private Dairy model;
+    private Context context;
+
+
+    public DairyViewHolder(@NonNull View itemView,Context context) {
         super(itemView);
         ButterKnife.bind(this, itemView);
 
@@ -64,6 +73,23 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
         singleBottom.setVisibility(View.GONE);
 
         mFirestore = FirebaseFirestore.getInstance();
+
+        this.context = context;
+    }
+
+    public void init(Dairy model,FirebaseFirestore mFirestore){
+        this.model = model;
+        this.mFirestore = mFirestore;
+    }
+
+    private void toEdit(){
+        Intent intent = new Intent(context, AddItemActivity.class);
+        intent.putExtra(DAIRYIDEXTRA,model.getDairyid());
+        context.startActivity(intent);
+    }
+
+    private void delete(){
+        mFirestore.collection(DAIRYCOL).document(model.getDairyid()).delete();
     }
 
 
@@ -98,9 +124,12 @@ public class DairyViewHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.single_delete)
     public void onSingleDeleteClicked() {
+        delete();
+    }
 
-        //todo: delete this item in the database
-
+    @OnClick(R.id.single_edit)
+    public void onSingleEditClicked() {
+        toEdit();
     }
 
     public void setUpListItem(Dairy model) {
