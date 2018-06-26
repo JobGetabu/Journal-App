@@ -82,7 +82,6 @@ public class SignInActivity extends AppCompatActivity {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
                         .setLogo(R.mipmap.ic_launcher)
                         .setTheme(R.style.AppTheme)
                         .setAvailableProviders(Collections.singletonList(

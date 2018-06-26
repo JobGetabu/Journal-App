@@ -100,6 +100,30 @@ public class AddItemActivity extends AppCompatActivity {
     @OnClick(R.id.item_save)
     public void onSave(View view) {
 
+        if (stringIdExtra != null) {
+
+            if (moods.isEmpty()){
+                Toast.makeText(this, "Select a mood", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String details = itemDetails.getEditText().getText().toString();
+            mFirestore.collection(DAIRYCOL).document(stringIdExtra)
+                    .update("details",details, "moods",moods)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(AddItemActivity.this, "Saved Successful", Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                Toast.makeText(AddItemActivity.this, "Failed to Save", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+            finish();
+            return;
+        }
+
         Toast.makeText(AddItemActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
         String details = itemDetails.getEditText().getText().toString();
         String key =  mFirestore.collection(DAIRYCOL).document().getId();
