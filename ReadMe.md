@@ -1,11 +1,12 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/22516895/41944412-50f702b0-79b0-11e8-8be7-204780b82f8c.png" alt="Andela Med-Manager" height="200px"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/22516895/41945748-444d34ec-79b7-11e8-895a-a0884648c028.png" alt="Andela Journal-App" height="200px"></p>
+
 # Journal Android App
 
 The app uses the **Architecture Components**. I have used the following components for development:
 
 * FireStore - For offline data persistence and real time updates
-* LiveData - Handle data in a lifecycle-aware fashion 
 * ViewModel - Manage your UI's data in a lifecycle-aware fashion
+* Material components - To give the dashing new feel for views
 * ButterKnife - (view injection) minimize the glue code necessary to bind your application logic and layouts.
 
 ## Prerequisites
@@ -25,5 +26,9 @@ The Journal app utilizes the FirebaseUI Auth for a seamless experience.
 
 ### Home Page
 
+Lists the entries made by the user. One can delete or modify any diary entry.
+
+
+<img src="https://user-images.githubusercontent.com/22516895/41944410-503a0e30-79b0-11e8-8474-e0c2c4a12b3f.png" width="280"/>  <img src="https://user-images.githubusercontent.com/22516895/41944411-50945dae-79b0-11e8-8a9f-50580f7bdec4.png" width="280"/>
 
 > The final apk can be downloaded here : <insert link>
