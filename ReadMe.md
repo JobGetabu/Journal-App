@@ -35,7 +35,7 @@ Lists the entries made by the user. One can delete or modify any diary entry.
 
 ### Author
 
-Developer : [Job Getabu](jobgetabu.me)
+Developer : [Job Getabu](http://jobgetabu.me)
 
 ### Acknowledgement
 1. [Firebase](https://firebase.google.com)
