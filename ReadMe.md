@@ -1,4 +1,4 @@
-<p align="center"><img src="logo/main color/1024px.png" alt="Andela Med-Manager" height="200px"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/22516895/41944412-50f702b0-79b0-11e8-8be7-204780b82f8c.png" alt="Andela Med-Manager" height="200px"></p>
 # Journal Android App
 
 The app uses the **Architecture Components**. I have used the following components for development:
