@@ -32,3 +32,15 @@ Lists the entries made by the user. One can delete or modify any diary entry.
 <img src="https://user-images.githubusercontent.com/22516895/41944410-503a0e30-79b0-11e8-8474-e0c2c4a12b3f.png" width="280"/>  <img src="https://user-images.githubusercontent.com/22516895/41944411-50945dae-79b0-11e8-8a9f-50580f7bdec4.png" width="280"/>
 
 > The final apk can be downloaded here : <[download](https://drive.google.com/open?id=16to0-YK0Vz9F7mCxRqZYduHuwlBszGgW)>
+
+### Author
+
+Developer : [Job Getabu](jobgetabu.me)
+
+### Acknowledgement
+1. [Firebase](https://firebase.google.com)
+2. [Firebase UI](https://github.com/firebase/FirebaseUI-Android)
+3. [aurelhubert Bottom navigation library](https://github.com/aurelhubert/ahbottomnavigation)
+4. [jakewharton ButterKnife DI library](http://jakewharton.github.io/butterknife/)
+5. [hdodenhof Circle Imageview](https://github.com/hdodenhof/CircleImageView)
+6. [Read me inspired by](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
